@@ -1,0 +1,41 @@
+.timer__block {
+  position: relative;
+  margin: 0;
+  border: 6px solid var(--text-color);
+  border-radius: 12px;
+  padding: 0;
+  color: var(--text-color);
+  font-family: "Jersey 15", sans-serif;
+  font-size: 8rem;
+  line-height: 1;
+  letter-spacing: 2px;
+  text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-color);
+  inline-size: 300px;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer__work-state {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  margin: 0;
+  padding: 0;
+  opacity: 0.8;
+  font-family: "Pixelify Sans", sans-serif;
+  font-weight: 500;
+  font-size: 10px;
+  text-shadow: none;
+}
+
+.control-buttons__block {
+  display: flex;
+  justify-content: space-between;
+  margin-block-start: 20px;
+  padding-inline: 15px;
+}
+
+.control-button {
+  inline-size: 135px;
+  block-size: 40px;
+}
