@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Timer from "./components/Timer";
+import Timer from "./components/Timer/Timer";
 import getSavedData from "./utils/getSavedData.js";
 import setSavedData from "./utils/setSavedData.js";
 import "./App.css";

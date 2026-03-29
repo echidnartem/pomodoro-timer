@@ -1,0 +1,11 @@
+.control-buttons__block {
+  display: flex;
+  justify-content: space-between;
+  margin-block-start: 20px;
+  padding-inline: 15px;
+}
+
+.control-button {
+  inline-size: 135px;
+  block-size: 40px;
+}
