@@ -1,9 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import useTimer from "../hooks/useTimer";
+import useTimerPersistence from "../hooks/useTimerPersistence";
 import formatTime from "../utils/formatTime";
 import playAlarm from "../utils/playAlarm";
 import getSavedData from "../utils/getSavedData"
-import setSavedData from "../utils/setSavedData";
 import getMskDate from "../utils/getMskDate";
 import Counter from "./Counter";
 import "./Timer.css";
@@ -53,18 +53,7 @@ function Timer() {
 
   const { remainded, setRemainded, isActive, setIsActive } = useTimer(initialData.remainded, breakHandler);
 
-  useEffect(() => {
-    let status = workState ? "Работа" : "Отдых";
-    if (!isActive) status = "Пауза";
-    document.title = `${formatTime(remainded)} — ${status}`;
-    const data = {
-      remainded,
-      workState,
-      date: getMskDate(),
-      completedCount,
-    };
-    setSavedData("pomodoro-data", data);
-  }, [remainded, workState, isActive]);
+  useTimerPersistence(remainded, workState, isActive, completedCount);
 
   return (
     <div>
