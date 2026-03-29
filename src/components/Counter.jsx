@@ -1,4 +1,3 @@
-import { useState } from "react"
 import "./Counter.css";
 
 function Counter({ number }) {

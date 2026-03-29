@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
+import useTimer from "../hooks/useTimer";
 import formatTime from "../utils/formatTime";
 import playAlarm from "../utils/playAlarm";
 import getSavedData from "../utils/getSavedData"
@@ -7,8 +8,10 @@ import getMskDate from "../utils/getMskDate";
 import Counter from "./Counter";
 import "./Timer.css";
 
-const WORK_TIME = 1500;
-const BREAK_TIME = 300;
+const SETTINGS = {
+  WORK_TIME: 1500,
+  BREAK_TIME: 300,
+}
 
 function Timer() {
   const getInitialTimerData = () => {
@@ -19,23 +22,10 @@ function Timer() {
       return saved;
     }
 
-    return { remainded: WORK_TIME, workState: true, completedCount: 0 };
+    return { remainded: SETTINGS.WORK_TIME, workState: true, completedCount: 0 };
   };
 
-  const [initialData] = useState(() => getInitialTimerData());
-
-  const [remainded, setRemainded] = useState(initialData.remainded || WORK_TIME);
-  const [workState, setWorkState] = useState(initialData.workState);
-  const [completedCount, setCompletedCount] = useState(initialData.completedCount || 0);
-  const [isActive, setIsActive] = useState(false);
-
-  function resetTimer() {
-    setIsActive(false);
-    setRemainded(WORK_TIME);
-    setWorkState(true);
-  }
-
-  function breakHandler() {
+  const breakHandler = useCallback(() => {
     playAlarm();
     setIsActive(false);
 
@@ -45,34 +35,23 @@ function Timer() {
 
     setWorkState((previousState) => {
       const nextState = !previousState;
-      setRemainded(nextState ? WORK_TIME : BREAK_TIME);
+      setRemainded(nextState ? SETTINGS.WORK_TIME : SETTINGS.BREAK_TIME);
       return nextState;
     });
+  })
+
+  function resetTimer() {
+    setIsActive(false);
+    setRemainded(SETTINGS.WORK_TIME);
+    setWorkState(true);
   }
 
-  useEffect(() => {
-    let interval = null;
+  const [initialData] = useState(() => getInitialTimerData());
 
-    if (isActive && remainded > 0) {
-      const startTime = Date.now();
-      const initialRemainded = remainded;
+  const [workState, setWorkState] = useState(initialData.workState);
+  const [completedCount, setCompletedCount] = useState(initialData.completedCount);
 
-      interval = setInterval(() => {
-        const nowTime = Date.now();
-        const differenceTime = Math.floor((nowTime - startTime) / 1000);
-
-        const nextTime = initialRemainded - differenceTime;
-
-        if (nextTime <= 0) {
-          breakHandler();
-        } else {
-          setRemainded(nextTime);
-        }
-      }, 500);
-    }
-
-    return () => clearInterval(interval);
-  }, [isActive]);
+  const { remainded, setRemainded, isActive, setIsActive } = useTimer(initialData.remainded, breakHandler);
 
   useEffect(() => {
     let status = workState ? "Работа" : "Отдых";
