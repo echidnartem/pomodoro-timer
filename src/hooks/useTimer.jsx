@@ -1,31 +1,34 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 
 function useTimer(initialTime, onTimerEnd) {
   const [remainded, setRemainded] = useState(initialTime);
   const [isActive, setIsActive] = useState(false);
 
+  const deadlineRef = useRef(null);
+
   useEffect(() => {
-    let interval = null;
-
     if (isActive && remainded > 0) {
-      const startTime = Date.now();
-      const initialRemainded = remainded;
+      if (!deadlineRef.current) {
+        deadlineRef.current = Date.now() + remainded * 1000;
+      }
 
-      interval = setInterval(() => {
+      const interval = setInterval(() => {
         const nowTime = Date.now();
-        const differenceTime = Math.floor((nowTime - startTime) / 1000);
+        const differenceTime = Math.floor((deadlineRef.current - nowTime) / 1000);
 
-        const nextTime = initialRemainded - differenceTime;
-
-        if (nextTime <= 0) {
+        if (differenceTime <= 0) {
+          deadlineRef.current = null;
           onTimerEnd();
         } else {
-          setRemainded(nextTime);
+          setRemainded(differenceTime);
         }
       }, 500);
-    }
 
-    return () => clearInterval(interval);
+      return () => clearInterval(interval);
+    } else {
+      deadlineRef.current = null;
+    }
+      
   }, [isActive, onTimerEnd]);
 
   return { remainded, setRemainded, isActive, setIsActive }
