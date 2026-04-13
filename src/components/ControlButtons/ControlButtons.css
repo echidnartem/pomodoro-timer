@@ -1,6 +1,7 @@
 .control-buttons__block {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
+  gap: 40px;
   margin-block-start: 20px;
   padding-inline: 15px;
 }

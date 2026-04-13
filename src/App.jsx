@@ -30,7 +30,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="app">
       <button
         className="button__theme-toggle"
         onClick={toggleTheme}

@@ -1,6 +1,6 @@
 .timer__block {
   position: relative;
-  margin: 0;
+  margin: 0 auto;
   border: 6px solid var(--text-color);
   border-radius: 12px;
   padding: 0;
