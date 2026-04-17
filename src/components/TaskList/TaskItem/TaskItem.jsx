@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Trash, Pencil } from 'lucide-react';
 import "./TaskItem.css"
 
 function TaskItem({
@@ -44,8 +45,8 @@ function TaskItem({
           </button>
           <span className="task-static__text">{text}</span>
           <div className="task-static__controls">
-            <button className="task-static__button" onClick={onDelete}>🗑️</button>
-            <button className="task-static__button" onClick={() => setIsEditing(true)}>✏️</button>
+            <button className="task-static__button" onClick={onDelete}><Trash className="button-icon" /></button>
+            <button className="task-static__button" onClick={() => setIsEditing(true)}><Pencil className="button-icon" /></button>
           </div>
         </div>
       )}

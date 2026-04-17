@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Moon, Sun } from "lucide-react";
 import Timer from "./components/Timer/Timer";
 import getSavedData from "./utils/getSavedData.js";
 import setSavedData from "./utils/setSavedData.js";
@@ -36,7 +37,11 @@ function App() {
         onClick={toggleTheme}
         style={{ position: "absolute", top: "20px", right: "20px" }}
       >
-        {theme === "light" ? "🌙" : "☀️"}
+        {theme === "light" ? (
+          <Moon className="button-icon" />
+        ) : (
+          <Sun className="button-icon" />
+        )}
       </button>
       <Timer />
     </div>
