@@ -21,10 +21,19 @@
   block-size: 30px;
 }
 
-
 .button-icon {
   color: var(--text-color);
   stroke-width: 1.2;
+}
+
+.main-image {
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  z-index: -1;
+  width: auto;
+  height: 80vh;
+  color: var(--text-color);
 }
 
 .button__theme-toggle:focus,

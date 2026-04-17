@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
 import Timer from "./components/Timer/Timer";
+import MainImage from "./assets/image.svg?react";
 import getSavedData from "./utils/getSavedData.js";
 import setSavedData from "./utils/setSavedData.js";
 import "./App.css";
@@ -43,6 +44,7 @@ function App() {
           <Sun className="button-icon" />
         )}
       </button>
+      <MainImage className="main-image" viewBox="90 100 600 600" />
       <Timer />
     </div>
   );

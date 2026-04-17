@@ -11,10 +11,10 @@
 
 .task-static__text {
   margin-inline: 15px;
-  overflow-wrap: break-word;
+  overflow-wrap: anywhere;
   font-family: "Pixelify Sans", sans-serif;
   line-height: 1;
-  word-wrap: break-word;
+  max-block-size: 100%;
   white-space: pre-wrap;
   max-inline-size: 100%;
 }
