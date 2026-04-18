@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Trash, Pencil } from 'lucide-react';
-import "./TaskItem.css"
+import { Trash, Pencil, SquareCheckBig, Square } from "lucide-react";
+import "./TaskItem.css";
 
 function TaskItem({
   isCompleted,
@@ -37,16 +37,24 @@ function TaskItem({
         </form>
       ) : (
         <div className="task-static">
-          <button
-            onClick={onToggle}
-            className={`task-static__status-button ${isCompleted ? "task-static__status-button--completed" : ""}`}
-          >
-            {isCompleted && "✓"}
+          <button onClick={onToggle} className="task-static__status-button">
+            {isCompleted ? (
+              <SquareCheckBig className="button-icon" />
+            ) : (
+              <Square className="button-icon" />
+            )}
           </button>
           <span className="task-static__text">{text}</span>
           <div className="task-static__controls">
-            <button className="task-static__button" onClick={onDelete}><Trash className="button-icon" /></button>
-            <button className="task-static__button" onClick={() => setIsEditing(true)}><Pencil className="button-icon" /></button>
+            <button className="task-static__button" onClick={onDelete}>
+              <Trash className="button-icon" />
+            </button>
+            <button
+              className="task-static__button"
+              onClick={() => setIsEditing(true)}
+            >
+              <Pencil className="button-icon" />
+            </button>
           </div>
         </div>
       )}

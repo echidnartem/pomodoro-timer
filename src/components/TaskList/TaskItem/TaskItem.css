@@ -13,6 +13,7 @@
   margin-inline: 15px;
   overflow-wrap: anywhere;
   font-family: "Pixelify Sans", sans-serif;
+  font-weight: 650;
   line-height: 1;
   max-block-size: 100%;
   white-space: pre-wrap;
@@ -27,17 +28,10 @@
 }
 
 .task-static__status-button {
-  border: 2px solid var(--text-color);
-  border-radius: 50%;
   padding: 0;
   background-color: transparent;
-  min-inline-size: 25px;
-  min-block-size: 25px;
-}
-
-.task-static__status-button--completed {
-  color: var(--text-color);
-  font-size: 15px;
+  inline-size: 25px;
+  block-size: 25px;
 }
 
 .task__input {

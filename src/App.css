@@ -22,14 +22,16 @@
 }
 
 .button-icon {
+  width: 24px;
+  height: 24px;
   color: var(--text-color);
-  stroke-width: 1.2;
+  stroke-width: 2;
 }
 
 .main-image {
   position: fixed;
   bottom: 0px;
-  left: 0px;
+  left: 20px;
   z-index: -1;
   width: auto;
   height: 80vh;

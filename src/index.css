@@ -52,7 +52,9 @@ button {
 button:hover {
   filter: brightness(1.2);
 }
-button:focus,
+button:focus {
+  outline: none;
+}
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
