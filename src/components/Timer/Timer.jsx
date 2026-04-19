@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import useTimer from "../../hooks/useTimer";
+import useTimerModes from "../../hooks/useTimerModes";
 import useTimerPersistence from "../../hooks/useTimerPersistence";
 import formatTime from "../../utils/formatTime";
 import playAlarm from "../../utils/playAlarm";
@@ -12,71 +13,58 @@ import TaskList from "../TaskList/TaskList";
 import "./Timer.css";
 
 const SETTINGS = {
-  WORK_TIME: 1500,
-  BREAK_TIME: 300,
+  WORK_TIME: 25 * 60,
+  BREAK_TIME: 5 * 60,
+  MEDITATION_TIME: 10 * 60,
 };
 
-function Timer() {
-  const getInitialTimerData = () => {
-    const saved = getSavedData("pomodoro-data", null);
-    const today = getMskDate();
+function Timer({ mode }) {
+  const onDelete = useCallback((id) => {
+    setTasks((prev) => prev.filter((task) => task.id !== id));
+  }, []);
 
-    if (saved && saved.date === today) {
-      return saved;
-    }
-
-    return {
-      remainded: SETTINGS.WORK_TIME,
-      workState: true,
-      completedCount: 0,
-    };
-  };
-
-  const onDelete = (id) => {
-    setTasks(tasks.filter((task) => task.id !== id));
-  };
-
-  const onToggle = (id) => {
-    setTasks(
-      tasks.map((task) =>
+  const onToggle = useCallback((id) => {
+    setTasks((prev) =>
+      prev.map((task) =>
         task.id === id ? { ...task, isCompleted: !task.isCompleted } : task,
       ),
     );
-  };
+  }, []);
 
-  const onSave = (id, newText) => {
-    if (newText.trim() === "") {
-      onDelete(id);
-    } else {
-      setTasks(
-        tasks.map((task) =>
-          task.id === id ? { ...task, text: newText, isInitialEditing: false } : task,
-        ),
-      );
-    }
-  };
+  const onSave = useCallback(
+    (id, newText) => {
+      if (newText.trim() === "") {
+        onDelete(id);
+      } else {
+        setTasks((prev) =>
+          prev.map((task) =>
+            task.id === id
+              ? { ...task, text: newText, isInitialEditing: false }
+              : task,
+          ),
+        );
+      }
+    },
+    [onDelete],
+  );
 
-  const addTask = (text) => {
+  const addTask = useCallback((text) => {
     const newTask = {
       id: Date.now(),
       text: text,
       isCompleted: false,
       isInitialEditing: true,
     };
-    setTasks([...tasks, newTask]);
-  };
+    setTasks((prev) => [...prev, newTask]);
+  }, []);
 
-  const clearTasks = () => {
+  const clearTasks = useCallback(() => {
     setTasks([]);
-  };
-
-  const [initialData] = useState(() => getInitialTimerData());
+  }, []);
 
   const [tasks, setTasks] = useState(() => getSavedData("pomodoro-tasks", []));
-  const [workState, setWorkState] = useState(initialData.workState);
-  const [completedCount, setCompletedCount] = useState(
-    initialData.completedCount,
-  );
+  const [workState, setWorkState] = useState(true);
+  const [completedCount, setCompletedCount] = useState(0);
 
   const breakHandler = useCallback(() => {
     playAlarm();
@@ -91,20 +79,31 @@ function Timer() {
       setRemainded(nextState ? SETTINGS.WORK_TIME : SETTINGS.BREAK_TIME);
       return nextState;
     });
-  });
+  }, []);
 
-  function resetTimer() {
+  const resetTimer = useCallback(() => {
     setIsActive(false);
-    setRemainded(SETTINGS.WORK_TIME);
+    setRemainded(
+      mode === "pomodoro" ? SETTINGS.WORK_TIME : SETTINGS.MEDITATION_TIME,
+    );
     setWorkState(true);
-  }
+  }, [mode]);
 
   const { remainded, setRemainded, isActive, setIsActive } = useTimer(
-    initialData.remainded,
+    0,
     breakHandler,
   );
 
-  useTimerPersistence(remainded, workState, isActive, completedCount);
+  useTimerModes(
+    mode,
+    setRemainded,
+    setWorkState,
+    setCompletedCount,
+    setIsActive,
+    SETTINGS,
+  );
+
+  useTimerPersistence(remainded, workState, isActive, completedCount, mode);
 
   useEffect(() => {
     setSavedData("pomodoro-tasks", tasks);
@@ -114,7 +113,9 @@ function Timer() {
     <div className="timer">
       <div className="timer__block">
         {formatTime(remainded)}
-        <p className="timer__work-state">{workState ? "работа" : "отдых"}</p>
+        <p className="timer__work-state">
+          {mode === "pomodoro" ? (workState ? "работа" : "отдых") : "медитация"}
+        </p>
       </div>
       <ControlButtons
         isActive={isActive}
@@ -122,15 +123,17 @@ function Timer() {
         onPlayPause={() => setIsActive(!isActive)}
         onResetOrSkip={resetTimer}
       />
-      <Counter number={completedCount}></Counter>
-      <TaskList 
-        tasks={tasks}
-        addTask={() => addTask("")}
-        onDelete={onDelete}
-        onToggle={onToggle}
-        onSave={onSave}
-        clearTasks={clearTasks}
-      />
+      <Counter mode={mode} number={completedCount}></Counter>
+      {mode === "pomodoro" && (
+        <TaskList
+          tasks={tasks}
+          addTask={() => addTask("")}
+          onDelete={onDelete}
+          onToggle={onToggle}
+          onSave={onSave}
+          clearTasks={clearTasks}
+        />
+      )}
     </div>
   );
 }

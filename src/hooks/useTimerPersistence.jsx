@@ -1,11 +1,20 @@
-import { useEffect } from "react"
+import { useEffect } from "react";
 import formatTime from "../utils/formatTime";
 import setSavedData from "../utils/setSavedData";
 import getMskDate from "../utils/getMskDate";
 
-function useTimerPersistence(remainded, workState, isActive, completedCount) {
+function useTimerPersistence(
+  remainded,
+  workState,
+  isActive,
+  completedCount,
+  mode,
+) {
   useEffect(() => {
-    let status = workState ? "Работа" : "Отдых";
+    if (remainded === 0) return;
+
+    let status =
+      mode === "pomodoro" ? (workState ? "Работа" : "Отдых") : "Медитация";
     if (!isActive) status = "Пауза";
     document.title = `${formatTime(remainded)} — ${status}`;
     const data = {
@@ -14,7 +23,7 @@ function useTimerPersistence(remainded, workState, isActive, completedCount) {
       date: getMskDate(),
       completedCount,
     };
-    setSavedData("pomodoro-data", data);
+    setSavedData(`${mode}-data`, data);
   }, [remainded, workState, isActive]);
 }
 

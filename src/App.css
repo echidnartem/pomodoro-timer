@@ -10,7 +10,16 @@
   min-height: 80vh;
 }
 
-.button__theme-toggle {
+.app__buttons {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.button-toggle {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -28,7 +37,7 @@
   stroke-width: 2;
 }
 
-.main-image {
+.app__image {
   position: fixed;
   bottom: 0px;
   left: 20px;

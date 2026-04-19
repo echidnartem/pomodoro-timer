@@ -44,10 +44,10 @@ button {
   font-family: "Pixelify Sans", sans-serif;
   font-weight: 500;
   font-size: 1em;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
   background-color: var(--button-bg);
   transition: filter 0.25s;
   cursor: pointer;
-  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
 }
 button:hover {
   filter: brightness(1.2);
@@ -83,4 +83,18 @@ button:active {
   --text-color: var(--color-light-text);
   --button-bg: var(--color-light-text);
   --button-text: var(--color-light-bg);
+}
+
+[data-mode="pomodoro"] {
+  --color-light-bg: #f7f3b5;
+  --color-light-text: #372357;
+  --color-dark-bg: #372357;
+  --color-dark-text: #f7f3b5;
+}
+
+[data-mode="meditation"] {
+  --color-light-bg: #ed254e;
+  --color-light-text: #002a32;
+  --color-dark-bg: #002a32;
+  --color-dark-text: #ed254e;
 }
