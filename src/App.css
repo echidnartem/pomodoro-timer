@@ -6,17 +6,19 @@
 }
 
 .app {
+  position: relative;
   width: 100%;
   min-height: 80vh;
 }
 
 .app__buttons {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: calc(20px - 2rem);
+  right: calc(clamp(5px, 4vw, 40px) - 2rem); 
   display: flex;
   flex-direction: column;
   gap: 10px;
+  z-index: 5;
 }
 
 .button-toggle {
@@ -40,14 +42,26 @@
 .app__image {
   position: fixed;
   bottom: 0px;
-  left: 20px;
+  left: clamp(10px, 1.5vw - 1.5px, 20px);
   z-index: -1;
-  width: auto;
-  height: 80vh;
+  width: clamp(230px, 40.7vw - 83px, 550px);
+  height: auto;
   color: var(--text-color);
 }
 
 .button__theme-toggle:focus,
 .button__theme-toggle:focus-visible {
   outline: none;
+}
+
+@media (max-width: 768px) {
+  .app__image {
+    display: none;
+  }
+}
+
+@media (max-width: 425px) {
+  .app__buttons {
+    top: calc(250px - 2rem);
+  }
 }
