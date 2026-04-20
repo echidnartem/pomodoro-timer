@@ -25,7 +25,7 @@ function App() {
 
     if (favicon) {
       favicon.href =
-        theme === "dark" ? "/favicon-light.svg" : "/favicon-dark.svg";
+        theme === "dark" ? "favicon-light.svg" : "favicon-dark.svg";
     }
     document.documentElement.setAttribute("data-theme", theme);
     setSavedData("theme", theme);
