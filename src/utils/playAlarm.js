@@ -1,4 +1,4 @@
-const audio = new Audio("/bell.wav");
+const audio = new Audio("bell.wav");
 
 function playAlarm() {
   audio.currentTime = 0;
