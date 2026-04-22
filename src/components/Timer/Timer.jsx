@@ -79,7 +79,7 @@ function Timer({ mode }) {
       setRemainded(nextState ? SETTINGS.WORK_TIME : SETTINGS.BREAK_TIME);
       return nextState;
     });
-  }, []);
+  }, [workState]);
 
   const resetTimer = useCallback(() => {
     setIsActive(false);
