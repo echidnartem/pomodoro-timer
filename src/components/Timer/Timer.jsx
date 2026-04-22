@@ -76,7 +76,7 @@ function Timer({ mode }) {
 
     setWorkState((previousState) => {
       const nextState = !previousState;
-      setRemainded(nextState ? SETTINGS.WORK_TIME : SETTINGS.BREAK_TIME);
+      setRemainded(nextState ? (mode === "pomodoro" ? SETTINGS.WORK_TIME : SETTINGS.MEDITATION_TIME) : SETTINGS.BREAK_TIME);
       return nextState;
     });
   }, [workState]);
