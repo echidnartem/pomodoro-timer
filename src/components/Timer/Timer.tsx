@@ -29,28 +29,27 @@ function Timer({ mode }: TimerProps) {
   const [workState, setWorkState] = useState(true);
   const [completedCount, setCompletedCount] = useState(0);
 
-  const { remainded, setRemainded, isActive, setIsActive } = useTimer(0);
-
-  const breakHandler = useCallback(() => {
+  const handleTimerEnd = useCallback(() => {
     playAlarm();
-    setIsActive(false);
 
     if (workState) {
       setCompletedCount((prev) => prev + 1);
     }
 
-    setWorkState((previousState) => {
-      const nextState = !previousState;
-      setRemainded(
-        nextState
-          ? mode === "pomodoro"
-            ? SETTINGS.WORK_TIME
-            : SETTINGS.MEDITATION_TIME
-          : SETTINGS.BREAK_TIME,
-      );
-      return nextState;
-    });
-  }, [mode, setIsActive, setRemainded, workState]);
+    const nextWorkState = !workState;
+    setWorkState(nextWorkState);
+
+    return nextWorkState
+      ? mode === "pomodoro"
+        ? SETTINGS.WORK_TIME
+        : SETTINGS.MEDITATION_TIME
+      : SETTINGS.BREAK_TIME;
+  }, [mode, workState]);
+
+  const { remainded, setRemainded, isActive, setIsActive } = useTimer(
+    0,
+    handleTimerEnd,
+  );
 
   const onDelete = useCallback((id: number) => {
     setTasks((prev) => prev.filter((task) => task.id !== id));
@@ -113,12 +112,6 @@ function Timer({ mode }: TimerProps) {
   );
 
   useTimerPersistence(remainded, workState, isActive, completedCount, mode);
-
-  useEffect(() => {
-    if (isActive && remainded === 0) {
-      breakHandler();
-    }
-  }, [breakHandler, remainded, isActive]);
 
   useEffect(() => {
     setSavedData<Task[]>("pomodoro-tasks", tasks);

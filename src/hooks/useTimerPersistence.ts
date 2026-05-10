@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import formatTime from "../utils/formatTime";
 import setSavedData from "../utils/setSavedData";
 import getMskDate from "../utils/getMskDate";
-import type { TimerMode, TimerData } from "../types"
+import type { TimerMode, TimerData } from "../types";
 
 function useTimerPersistence(
   remainded: number,
@@ -25,7 +25,7 @@ function useTimerPersistence(
       completedCount,
     };
     setSavedData<TimerData>(`${mode}-data`, data);
-  }, [remainded, workState, isActive]);
+  }, [remainded, workState, isActive, completedCount, mode]);
 }
 
 export default useTimerPersistence;

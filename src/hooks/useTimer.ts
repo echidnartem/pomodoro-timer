@@ -8,7 +8,10 @@ type UseTimerResult = {
   setIsActive: Dispatch<SetStateAction<boolean>>;
 };
 
-function useTimer(initialTime: number): UseTimerResult {
+function useTimer(
+  initialTime: number,
+  onTimerEnd: () => number,
+): UseTimerResult {
   const [remainded, setRemainded] = useState(initialTime);
   const [isActive, setIsActive] = useState(false);
 
@@ -28,15 +31,24 @@ function useTimer(initialTime: number): UseTimerResult {
       if (deadlineRef.current === null) return;
 
       const nowTime = Date.now();
-      const differenceTime = Math.floor(
-        (deadlineRef.current - nowTime) / 1000,
-      );
+      const differenceTime = Math.floor((deadlineRef.current - nowTime) / 1000);
 
-      setRemainded(Math.max(differenceTime, 0));
+      if (differenceTime <= 0) {
+        deadlineRef.current = null;
+
+        const nextTime = onTimerEnd();
+
+        setIsActive(false);
+        setRemainded(nextTime);
+
+        return;
+      }
+
+      setRemainded(differenceTime);
     }, 500);
 
     return () => window.clearInterval(interval);
-  }, [isActive]);
+  }, [isActive, onTimerEnd]);
 
   return { remainded, setRemainded, isActive, setIsActive };
 }
