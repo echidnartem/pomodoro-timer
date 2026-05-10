@@ -1,17 +1,19 @@
 import { useEffect } from "react";
 import getSavedData from "../utils/getSavedData";
 import getMskDate from "../utils/getMskDate";
+import { TimerMode, TimerSettings, TimerData } from "../types"
+import type { Dispatch, SetStateAction } from "react";
 
 function useTimerModes(
-  mode,
-  setRemainded,
-  setWorkState,
-  setCompletedCount,
-  setIsActive,
-  SETTINGS,
+  mode: TimerMode,
+  setRemainded: Dispatch<SetStateAction<number>>,
+  setWorkState: Dispatch<SetStateAction<boolean>>,
+  setCompletedCount: Dispatch<SetStateAction<number>>,
+  setIsActive: Dispatch<SetStateAction<boolean>>,
+  SETTINGS: TimerSettings,
 ) {
   useEffect(() => {
-    const saved = getSavedData(`${mode}-data`, null);
+    const saved = getSavedData<TimerData | null>(`${mode}-data`, null);
     const today = getMskDate();
 
     setIsActive(false);

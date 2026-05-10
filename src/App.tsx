@@ -2,38 +2,39 @@ import { useState, useEffect } from "react";
 import { Moon, Sun, Eye, EyeOff } from "lucide-react";
 import Timer from "./components/Timer/Timer";
 import MainImage from "./assets/image.svg?react";
-import getSavedData from "./utils/getSavedData.js";
-import setSavedData from "./utils/setSavedData.js";
+import getSavedData from "./utils/getSavedData";
+import setSavedData from "./utils/setSavedData";
+import type { Theme, TimerMode} from "./types"
 import "./App.css";
 
 function App() {
-  const [theme, setTheme] = useState(() => {
+  const [theme, setTheme] = useState<Theme>(() => {
     return (
-      getSavedData("theme", null) ||
+      getSavedData<Theme | null>("theme", null) ||
       (window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light")
     );
   });
 
-  const [mode, setMode] = useState(() => {
-    return getSavedData("mode", null) || "pomodoro";
+  const [mode, setMode] = useState<TimerMode>(() => {
+    return getSavedData<TimerMode | null>("mode", null) || "pomodoro";
   });
 
   useEffect(() => {
     const favicon = document.getElementById("favicon");
 
-    if (favicon) {
+    if (favicon instanceof HTMLLinkElement) {
       favicon.href =
         theme === "dark" ? "favicon-light.svg" : "favicon-dark.svg";
     }
     document.documentElement.setAttribute("data-theme", theme);
-    setSavedData("theme", theme);
+    setSavedData<Theme>("theme", theme);
   }, [theme]);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-mode", mode);
-    setSavedData("mode", mode);
+    setSavedData<TimerMode>("mode", mode);
   }, [mode]);
 
   const toggleTheme = () => {

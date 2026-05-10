@@ -1,6 +1,6 @@
 const audio = new Audio("bell.wav");
 
-function playAlarm() {
+function playAlarm(): void {
   audio.currentTime = 0;
   audio.volume = 0.5;
   audio.play().catch((e) => console.log("Ошибка воспроизведения звука: ", e));

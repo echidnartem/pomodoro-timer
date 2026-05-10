@@ -2,13 +2,14 @@ import { useEffect } from "react";
 import formatTime from "../utils/formatTime";
 import setSavedData from "../utils/setSavedData";
 import getMskDate from "../utils/getMskDate";
+import type { TimerMode, TimerData } from "../types"
 
 function useTimerPersistence(
-  remainded,
-  workState,
-  isActive,
-  completedCount,
-  mode,
+  remainded: number,
+  workState: boolean,
+  isActive: boolean,
+  completedCount: number,
+  mode: TimerMode,
 ) {
   useEffect(() => {
     if (remainded === 0) return;
@@ -23,7 +24,7 @@ function useTimerPersistence(
       date: getMskDate(),
       completedCount,
     };
-    setSavedData(`${mode}-data`, data);
+    setSavedData<TimerData>(`${mode}-data`, data);
   }, [remainded, workState, isActive]);
 }
 

@@ -1,4 +1,4 @@
-function setSavedData(key, value) {
+function setSavedData<T>(key: string, value: T): boolean {
   try {
     localStorage.setItem(key, JSON.stringify(value));
     return true;

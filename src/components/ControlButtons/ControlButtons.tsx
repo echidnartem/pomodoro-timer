@@ -1,6 +1,13 @@
 import "./ControlButtons.css";
 
-function ControlButtons({ isActive, workState, onPlayPause, onResetOrSkip }) {
+type ControlButtonsProps = {
+  isActive: boolean;
+  workState: boolean;
+  onPlayPause: () => void;
+  onResetOrSkip: () => void;
+};
+
+function ControlButtons({ isActive, workState, onPlayPause, onResetOrSkip }: ControlButtonsProps) {
   return (
     <div className="control-buttons__block">
       <button className="control-button" onClick={onPlayPause}>

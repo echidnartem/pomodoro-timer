@@ -6,24 +6,57 @@ import formatTime from "../../utils/formatTime";
 import playAlarm from "../../utils/playAlarm";
 import setSavedData from "../../utils/setSavedData";
 import getSavedData from "../../utils/getSavedData";
-import getMskDate from "../../utils/getMskDate";
 import Counter from "../Counter/Counter";
 import ControlButtons from "../ControlButtons/ControlButtons";
 import TaskList from "../TaskList/TaskList";
+import type { TimerMode, TimerSettings, Task } from "../../types";
 import "./Timer.css";
 
-const SETTINGS = {
+const SETTINGS: TimerSettings = {
   WORK_TIME: 25 * 60,
   BREAK_TIME: 5 * 60,
   MEDITATION_TIME: 10 * 60,
 };
 
-function Timer({ mode }) {
-  const onDelete = useCallback((id) => {
+type TimerProps = {
+  mode: TimerMode;
+};
+
+function Timer({ mode }: TimerProps) {
+  const [tasks, setTasks] = useState<Task[]>(() =>
+    getSavedData<Task[]>("pomodoro-tasks", []),
+  );
+  const [workState, setWorkState] = useState(true);
+  const [completedCount, setCompletedCount] = useState(0);
+
+  const { remainded, setRemainded, isActive, setIsActive } = useTimer(0);
+
+  const breakHandler = useCallback(() => {
+    playAlarm();
+    setIsActive(false);
+
+    if (workState) {
+      setCompletedCount((prev) => prev + 1);
+    }
+
+    setWorkState((previousState) => {
+      const nextState = !previousState;
+      setRemainded(
+        nextState
+          ? mode === "pomodoro"
+            ? SETTINGS.WORK_TIME
+            : SETTINGS.MEDITATION_TIME
+          : SETTINGS.BREAK_TIME,
+      );
+      return nextState;
+    });
+  }, [mode, setIsActive, setRemainded, workState]);
+
+  const onDelete = useCallback((id: number) => {
     setTasks((prev) => prev.filter((task) => task.id !== id));
   }, []);
 
-  const onToggle = useCallback((id) => {
+  const onToggle = useCallback((id: number) => {
     setTasks((prev) =>
       prev.map((task) =>
         task.id === id ? { ...task, isCompleted: !task.isCompleted } : task,
@@ -32,7 +65,7 @@ function Timer({ mode }) {
   }, []);
 
   const onSave = useCallback(
-    (id, newText) => {
+    (id: number, newText: string) => {
       if (newText.trim() === "") {
         onDelete(id);
       } else {
@@ -48,7 +81,7 @@ function Timer({ mode }) {
     [onDelete],
   );
 
-  const addTask = useCallback((text) => {
+  const addTask = useCallback((text: string) => {
     const newTask = {
       id: Date.now(),
       text: text,
@@ -62,37 +95,13 @@ function Timer({ mode }) {
     setTasks([]);
   }, []);
 
-  const [tasks, setTasks] = useState(() => getSavedData("pomodoro-tasks", []));
-  const [workState, setWorkState] = useState(true);
-  const [completedCount, setCompletedCount] = useState(0);
-
-  const breakHandler = useCallback(() => {
-    playAlarm();
-    setIsActive(false);
-
-    if (workState) {
-      setCompletedCount((prev) => prev + 1);
-    }
-
-    setWorkState((previousState) => {
-      const nextState = !previousState;
-      setRemainded(nextState ? (mode === "pomodoro" ? SETTINGS.WORK_TIME : SETTINGS.MEDITATION_TIME) : SETTINGS.BREAK_TIME);
-      return nextState;
-    });
-  }, [workState]);
-
   const resetTimer = useCallback(() => {
     setIsActive(false);
     setRemainded(
       mode === "pomodoro" ? SETTINGS.WORK_TIME : SETTINGS.MEDITATION_TIME,
     );
     setWorkState(true);
-  }, [mode]);
-
-  const { remainded, setRemainded, isActive, setIsActive } = useTimer(
-    0,
-    breakHandler,
-  );
+  }, [mode, setIsActive, setRemainded]);
 
   useTimerModes(
     mode,
@@ -106,7 +115,13 @@ function Timer({ mode }) {
   useTimerPersistence(remainded, workState, isActive, completedCount, mode);
 
   useEffect(() => {
-    setSavedData("pomodoro-tasks", tasks);
+    if (isActive && remainded === 0) {
+      breakHandler();
+    }
+  }, [breakHandler, remainded, isActive]);
+
+  useEffect(() => {
+    setSavedData<Task[]>("pomodoro-tasks", tasks);
   }, [tasks]);
 
   return (

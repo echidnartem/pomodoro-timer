@@ -2,6 +2,15 @@ import { useState } from "react";
 import { Trash, Pencil, SquareCheckBig, Square } from "lucide-react";
 import "./TaskItem.css";
 
+type TaskItemProps = {
+  isCompleted: boolean;
+  isInitialEditing?: boolean;
+  text: string;
+  onToggle: () => void;
+  onDelete: () => void;
+  onSave: (newText: string) => void;
+};
+
 function TaskItem({
   isCompleted,
   isInitialEditing,
@@ -9,7 +18,7 @@ function TaskItem({
   onToggle,
   onDelete,
   onSave,
-}) {
+}: TaskItemProps) {
   const [isEditing, setIsEditing] = useState(isInitialEditing || false);
   const [editText, setEditText] = useState(text);
 
@@ -21,9 +30,9 @@ function TaskItem({
             className="task__input"
             autoFocus
             value={editText}
-            onChange={(e) => setEditText(e.target.value)}
+            onChange={(e) => setEditText(e.currentTarget.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") e.target.blur();
+              if (e.key === "Enter") e.currentTarget.blur();
             }}
             onBlur={() => {
               if (!editText) {
