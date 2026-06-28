@@ -1,0 +1,44 @@
+@font-face {
+  font-display: swap;
+  font-family: 'Pixelify Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./pixelify-sans-v3-cyrillic_latin-regular.woff2') format('woff2'),
+       url('./pixelify-sans-v3-cyrillic_latin-regular.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Pixelify Sans';
+  font-style: normal;
+  font-weight: 500;
+  src: url('./pixelify-sans-v3-cyrillic_latin-500.woff2') format('woff2'),
+       url('./pixelify-sans-v3-cyrillic_latin-500.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Pixelify Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: url('./pixelify-sans-v3-cyrillic_latin-600.woff2') format('woff2'),
+       url('./pixelify-sans-v3-cyrillic_latin-600.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Pixelify Sans';
+  font-style: normal;
+  font-weight: 700;
+  src: url('./pixelify-sans-v3-cyrillic_latin-700.woff2') format('woff2'),
+       url('./pixelify-sans-v3-cyrillic_latin-700.woff') format('woff');
+}
+
+@font-face {
+  font-display: swap;
+  font-family: 'Jersey 15';
+  font-style: normal;
+  font-weight: 400;
+  src: url('./jersey-15-v4-latin-regular.woff2') format('woff2'),
+       url('./jersey-15-v4-latin-regular.woff') format('woff');
+}
