@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import useTimer from "../../hooks/useTimer";
 import useTimerModes from "../../hooks/useTimerModes";
 import useTimerPersistence from "../../hooks/useTimerPersistence";
+import useTimerHotkey from "../../hooks/useTimerHotkey";
 import formatTime from "../../utils/formatTime";
 import playAlarm from "../../utils/playAlarm";
 import setSavedData from "../../utils/setSavedData";
@@ -50,6 +51,10 @@ function Timer({ mode }: TimerProps) {
     0,
     handleTimerEnd,
   );
+
+  const toggleTimer = useCallback(() => {
+    setIsActive((prev) => !prev);
+  }, []);
 
   const onDelete = useCallback((id: number) => {
     setTasks((prev) => prev.filter((task) => task.id !== id));
@@ -113,6 +118,8 @@ function Timer({ mode }: TimerProps) {
 
   useTimerPersistence(remainded, workState, isActive, completedCount, mode);
 
+  useTimerHotkey(toggleTimer);
+
   useEffect(() => {
     setSavedData<Task[]>("pomodoro-tasks", tasks);
   }, [tasks]);
@@ -128,7 +135,7 @@ function Timer({ mode }: TimerProps) {
       <ControlButtons
         isActive={isActive}
         workState={workState}
-        onPlayPause={() => setIsActive(!isActive)}
+        onPlayPause={toggleTimer}
         onResetOrSkip={resetTimer}
       />
       <Counter mode={mode} number={completedCount}></Counter>
