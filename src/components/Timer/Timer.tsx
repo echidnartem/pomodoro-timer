@@ -10,25 +10,26 @@ import getSavedData from "../../utils/getSavedData";
 import Counter from "../Counter/Counter";
 import ControlButtons from "../ControlButtons/ControlButtons";
 import TaskList from "../TaskList/TaskList";
-import type { TimerMode, TimerSettings, Task } from "../../types";
+import { getTimerSettingsKey } from "../../constants";
+import type {
+  TimerMode,
+  Task,
+  TimerSettings as TimerSettingsValue,
+} from "../../types";
 import "./Timer.css";
-
-const SETTINGS: TimerSettings = {
-  WORK_TIME: 25 * 60,
-  BREAK_TIME: 5 * 60,
-  MEDITATION_TIME: 10 * 60,
-};
 
 type TimerProps = {
   mode: TimerMode;
+  settings: TimerSettingsValue;
 };
 
-function Timer({ mode }: TimerProps) {
+function Timer({ mode, settings }: TimerProps) {
   const [tasks, setTasks] = useState<Task[]>(() =>
     getSavedData<Task[]>("pomodoro-tasks", []),
   );
   const [workState, setWorkState] = useState(true);
   const [completedCount, setCompletedCount] = useState(0);
+  const settingsKey = getTimerSettingsKey(settings);
 
   const handleTimerEnd = useCallback(() => {
     playAlarm();
@@ -42,10 +43,10 @@ function Timer({ mode }: TimerProps) {
 
     return nextWorkState
       ? mode === "pomodoro"
-        ? SETTINGS.WORK_TIME
-        : SETTINGS.MEDITATION_TIME
-      : SETTINGS.BREAK_TIME;
-  }, [mode, workState]);
+        ? settings.workTime
+        : settings.meditationTime
+      : settings.breakTime;
+  }, [mode, settings, workState]);
 
   const { remainded, setRemainded, isActive, setIsActive } = useTimer(
     0,
@@ -54,7 +55,7 @@ function Timer({ mode }: TimerProps) {
 
   const toggleTimer = useCallback(() => {
     setIsActive((prev) => !prev);
-  }, []);
+  }, [setIsActive]);
 
   const onDelete = useCallback((id: number) => {
     setTasks((prev) => prev.filter((task) => task.id !== id));
@@ -102,10 +103,10 @@ function Timer({ mode }: TimerProps) {
   const resetTimer = useCallback(() => {
     setIsActive(false);
     setRemainded(
-      mode === "pomodoro" ? SETTINGS.WORK_TIME : SETTINGS.MEDITATION_TIME,
+      mode === "pomodoro" ? settings.workTime : settings.meditationTime,
     );
     setWorkState(true);
-  }, [mode, setIsActive, setRemainded]);
+  }, [mode, setIsActive, setRemainded, settings]);
 
   useTimerModes(
     mode,
@@ -113,10 +114,18 @@ function Timer({ mode }: TimerProps) {
     setWorkState,
     setCompletedCount,
     setIsActive,
-    SETTINGS,
+    settings,
+    settingsKey,
   );
 
-  useTimerPersistence(remainded, workState, isActive, completedCount, mode);
+  useTimerPersistence(
+    remainded,
+    workState,
+    isActive,
+    completedCount,
+    mode,
+    settingsKey,
+  );
 
   useTimerHotkey(toggleTimer);
 
@@ -125,7 +134,7 @@ function Timer({ mode }: TimerProps) {
   }, [tasks]);
 
   return (
-    <div className="timer">
+    <div>
       <div className="timer__block">
         {formatTime(remainded)}
         <p className="timer__work-state">

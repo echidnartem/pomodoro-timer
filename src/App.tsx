@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { Moon, Sun, Eye, EyeOff } from "lucide-react";
+import { Moon, Sun, Eye, EyeOff, Settings } from "lucide-react";
 import Timer from "./components/Timer/Timer";
+import TimerSettings from "./components/Timer/TimerSettings";
 import MainImage from "./assets/image.svg?react";
+import useTimerSettings from "./hooks/useTimerSettings";
 import getSavedData from "./utils/getSavedData";
 import setSavedData from "./utils/setSavedData";
-import type { Theme, TimerMode} from "./types"
+import type { Theme, TimerMode } from "./types";
 import "./App.css";
 
 function App() {
@@ -20,6 +22,14 @@ function App() {
   const [mode, setMode] = useState<TimerMode>(() => {
     return getSavedData<TimerMode | null>("mode", null) || "pomodoro";
   });
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const {
+    settings,
+    presets,
+    selectedPresetId,
+    selectPreset,
+    updateCustomSettings,
+  } = useTimerSettings();
 
   useEffect(() => {
     const favicon = document.getElementById("favicon");
@@ -45,6 +55,10 @@ function App() {
     setMode((prev) => (prev === "pomodoro" ? "meditation" : "pomodoro"));
   };
 
+  const toggleSettings = () => {
+    setIsSettingsOpen((prev) => !prev);
+  };
+
   return (
     <div className="app">
       <div className="app__buttons">
@@ -62,9 +76,28 @@ function App() {
             <Eye className="button-icon" />
           )}
         </button>
+        <div className="app__settings-control">
+          <button
+            className="button-toggle"
+            onClick={toggleSettings}
+          >
+            <Settings className="button-icon" />
+          </button>
+          {isSettingsOpen && (
+            <div className="app__settings-popover">
+              <TimerSettings
+                settings={settings}
+                presets={presets}
+                selectedPresetId={selectedPresetId}
+                onSelectPreset={selectPreset}
+                onChangeCustomSettings={updateCustomSettings}
+              />
+            </div>
+          )}
+        </div>
       </div>
       <MainImage className="app__image" viewBox="90 100 600 600" />
-      <Timer mode={mode} />
+      <Timer mode={mode} settings={settings} />
     </div>
   );
 }

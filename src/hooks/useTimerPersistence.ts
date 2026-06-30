@@ -10,6 +10,7 @@ function useTimerPersistence(
   isActive: boolean,
   completedCount: number,
   mode: TimerMode,
+  settingsKey: string,
 ) {
   useEffect(() => {
     if (remainded === 0) return;
@@ -23,9 +24,10 @@ function useTimerPersistence(
       workState,
       date: getMskDate(),
       completedCount,
+      settingsKey,
     };
     setSavedData<TimerData>(`${mode}-data`, data);
-  }, [remainded, workState, isActive, completedCount, mode]);
+  }, [remainded, workState, isActive, completedCount, mode, settingsKey]);
 }
 
 export default useTimerPersistence;

@@ -3,16 +3,20 @@ export type Theme = "light" | "dark";
 export type TimerMode = "pomodoro" | "meditation";
 
 export type TimerSettings = {
-  WORK_TIME: number;
-  BREAK_TIME: number;
-  MEDITATION_TIME: number;
+  id: string;
+  workTime: number;
+  breakTime: number;
+  meditationTime: number;
 };
+
+export type CustomTimerSettings = Omit<TimerSettings, "id">;
 
 export type TimerData = {
   remainded: number;
   workState: boolean;
   date: string;
   completedCount: number;
+  settingsKey: string;
 };
 
 export type Task = {

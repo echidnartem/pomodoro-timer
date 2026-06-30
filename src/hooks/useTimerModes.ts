@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import getSavedData from "../utils/getSavedData";
 import getMskDate from "../utils/getMskDate";
-import { TimerMode, TimerSettings, TimerData } from "../types"
 import type { Dispatch, SetStateAction } from "react";
+import type { TimerMode, TimerSettings, TimerData } from "../types";
 
 function useTimerModes(
   mode: TimerMode,
@@ -10,24 +10,26 @@ function useTimerModes(
   setWorkState: Dispatch<SetStateAction<boolean>>,
   setCompletedCount: Dispatch<SetStateAction<number>>,
   setIsActive: Dispatch<SetStateAction<boolean>>,
-  SETTINGS: TimerSettings,
+  settings: TimerSettings,
+  settingsKey: string,
 ) {
   useEffect(() => {
     const saved = getSavedData<TimerData | null>(`${mode}-data`, null);
     const today = getMskDate();
+    const hasSavedToday = saved?.date === today;
 
     setIsActive(false);
 
-    if (saved && saved.date === today) {
+    if (hasSavedToday && saved.settingsKey === settingsKey) {
       setRemainded(saved.remainded);
       setWorkState(saved.workState);
       setCompletedCount(saved.completedCount || 0);
     } else {
       setRemainded(
-        mode === "pomodoro" ? SETTINGS.WORK_TIME : SETTINGS.MEDITATION_TIME,
+        mode === "pomodoro" ? settings.workTime : settings.meditationTime,
       );
       setWorkState(true);
-      setCompletedCount(0);
+      setCompletedCount(hasSavedToday ? saved.completedCount || 0 : 0);
     }
   }, [
     mode,
@@ -35,7 +37,8 @@ function useTimerModes(
     setWorkState,
     setCompletedCount,
     setIsActive,
-    SETTINGS,
+    settings,
+    settingsKey,
   ]);
 }
 
