@@ -1,30 +1,54 @@
+.task-section {
+  margin-block-start: 32px;
+  text-align: left;
+}
+
+.task-section__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--text-color);
+  padding-block-end: 10px;
+}
+
+.task-section__title {
+  margin: 0;
+  font-family: "Pixelify Sans", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+}
+
 .task-list {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: stretch;
-  gap: 5px;
-  margin: 0 auto;
+  gap: 8px;
+  margin: 12px auto 0;
   inline-size: 100%;
-  max-inline-size: 300px;
 }
 
 .task-list__controls {
   display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-block: 80px 20px;
+  gap: 8px;
 }
 
 .task-list__button {
+  display: grid;
+  place-items: center;
   padding: 0;
   color: var(--button-text);
-  font-family: "Jersey 15", sans-serif;
-  font-size: 35px;
-  block-size: 40px;
-  inline-size: 50px;
+  block-size: 36px;
+  inline-size: 36px;
+}
+
+.task-list__button svg {
+  width: 20px;
+  height: 20px;
 }
 
 .task-list__empty {
+  margin: 0;
   font-family: "Pixelify Sans", sans-serif;
+  font-size: 14px;
+  opacity: 0.8;
 }

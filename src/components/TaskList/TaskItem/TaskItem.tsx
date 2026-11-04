@@ -46,7 +46,11 @@ function TaskItem({
         </form>
       ) : (
         <div className="task-static">
-          <button onClick={onToggle} className="task-static__status-button">
+          <button
+            onClick={onToggle}
+            className="task-static__status-button"
+            title={isCompleted ? "Вернуть в работу" : "Отметить выполненной"}
+          >
             {isCompleted ? (
               <SquareCheckBig className="button-icon" />
             ) : (
@@ -55,12 +59,17 @@ function TaskItem({
           </button>
           <span className="task-static__text">{text}</span>
           <div className="task-static__controls">
-            <button className="task-static__button" onClick={onDelete}>
+            <button
+              className="task-static__button"
+              onClick={onDelete}
+              title="Удалить задачу"
+            >
               <Trash className="button-icon" />
             </button>
             <button
               className="task-static__button"
               onClick={() => setIsEditing(true)}
+              title="Редактировать задачу"
             >
               <Pencil className="button-icon" />
             </button>

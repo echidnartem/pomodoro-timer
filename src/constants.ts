@@ -1,6 +1,7 @@
 import type { TimerSettings } from "./types";
 
 export const CUSTOM_TIMER_SETTINGS_ID = "custom";
+export const MAX_TIMER_MINUTES = 600;
 
 export const TIMER_PRESETS: TimerSettings[] = [
   {

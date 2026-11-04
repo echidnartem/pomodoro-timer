@@ -61,43 +61,54 @@ function App() {
 
   return (
     <div className="app">
-      <div className="app__buttons">
-        <button className="button-toggle" onClick={toggleTheme}>
-          {theme === "light" ? (
-            <Moon className="button-icon" />
-          ) : (
-            <Sun className="button-icon" />
-          )}
-        </button>
-        <button className="button-toggle" onClick={toggleMode}>
-          {mode === "pomodoro" ? (
-            <EyeOff className="button-icon" />
-          ) : (
-            <Eye className="button-icon" />
-          )}
-        </button>
-        <div className="app__settings-control">
+      <MainImage className="app__image" viewBox="90 100 600 600" />
+      <main className="app__content">
+        <div className="app__buttons">
           <button
             className="button-toggle"
-            onClick={toggleSettings}
+            onClick={toggleTheme}
+            title={theme === "light" ? "Тёмная тема" : "Светлая тема"}
           >
-            <Settings className="button-icon" />
+            {theme === "light" ? (
+              <Moon className="button-icon" />
+            ) : (
+              <Sun className="button-icon" />
+            )}
           </button>
-          {isSettingsOpen && (
-            <div className="app__settings-popover">
-              <TimerSettings
-                settings={settings}
-                presets={presets}
-                selectedPresetId={selectedPresetId}
-                onSelectPreset={selectPreset}
-                onChangeCustomSettings={updateCustomSettings}
-              />
-            </div>
-          )}
+          <button
+            className="button-toggle"
+            onClick={toggleMode}
+            title={mode === "pomodoro" ? "Режим медитации" : "Режим помодоро"}
+          >
+            {mode === "pomodoro" ? (
+              <EyeOff className="button-icon" />
+            ) : (
+              <Eye className="button-icon" />
+            )}
+          </button>
+          <div className="app__settings-control">
+            <button
+              className="button-toggle"
+              onClick={toggleSettings}
+              title="Настройки"
+            >
+              <Settings className="button-icon" />
+            </button>
+            {isSettingsOpen && (
+              <div className="app__settings-popover">
+                <TimerSettings
+                  settings={settings}
+                  presets={presets}
+                  selectedPresetId={selectedPresetId}
+                  onSelectPreset={selectPreset}
+                  onChangeCustomSettings={updateCustomSettings}
+                />
+              </div>
+            )}
+          </div>
         </div>
-      </div>
-      <MainImage className="app__image" viewBox="90 100 600 600" />
-      <Timer mode={mode} settings={settings} />
+        <Timer mode={mode} settings={settings} />
+      </main>
     </div>
   );
 }

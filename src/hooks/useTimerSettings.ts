@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   CUSTOM_TIMER_SETTINGS_ID,
   DEFAULT_TIMER_SETTINGS,
+  MAX_TIMER_MINUTES,
   TIMER_PRESETS,
 } from "../constants";
 import getSavedData from "../utils/getSavedData";
@@ -9,6 +10,20 @@ import setSavedData from "../utils/setSavedData";
 import type { TimerSettings, CustomTimerSettings } from "../types";
 
 const TIMER_SETTINGS_STORAGE_KEY = "timer-settings";
+const MIN_TIMER_SECONDS = 60;
+const MAX_TIMER_SECONDS = MAX_TIMER_MINUTES * 60;
+
+function clampSettings(settings: TimerSettings): TimerSettings {
+  const clampDuration = (seconds: number) =>
+    Math.min(MAX_TIMER_SECONDS, Math.max(MIN_TIMER_SECONDS, seconds));
+
+  return {
+    ...settings,
+    workTime: clampDuration(settings.workTime),
+    breakTime: clampDuration(settings.breakTime),
+    meditationTime: clampDuration(settings.meditationTime),
+  };
+}
 
 type UseTimerSettingsResult = {
   settings: TimerSettings;
@@ -30,12 +45,13 @@ function areTimerSettingsEqual(
 }
 
 function useTimerSettings(): UseTimerSettingsResult {
-  const [settings, setSettings] = useState<TimerSettings>(() =>
-    getSavedData<TimerSettings>(
+  const [settings, setSettings] = useState<TimerSettings>(() => {
+    const savedSettings = getSavedData<TimerSettings>(
       TIMER_SETTINGS_STORAGE_KEY,
       DEFAULT_TIMER_SETTINGS,
-    ),
-  );
+    );
+    return clampSettings(savedSettings);
+  });
 
   const selectedPresetId = useMemo(() => {
     const selectedPreset = TIMER_PRESETS.find((preset) =>
@@ -57,10 +73,12 @@ function useTimerSettings(): UseTimerSettingsResult {
 
   const updateCustomSettings = useCallback(
     (customSettings: CustomTimerSettings) => {
-      setSettings({
-        id: CUSTOM_TIMER_SETTINGS_ID,
-        ...customSettings,
-      });
+      setSettings(
+        clampSettings({
+          id: CUSTOM_TIMER_SETTINGS_ID,
+          ...customSettings,
+        }),
+      );
     },
     [],
   );

@@ -1,7 +1,8 @@
 .task-static {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 12px;
+  padding-block: 8px;
 }
 
 .task-static__controls {
@@ -10,23 +11,16 @@
 }
 
 .task-static__text {
-  margin-inline: 15px;
+  flex: 1;
+  min-width: 0;
   overflow-wrap: anywhere;
   font-family: "Pixelify Sans", sans-serif;
   font-weight: 650;
   line-height: 1;
-  max-block-size: 100%;
   white-space: pre-wrap;
-  max-inline-size: 100%;
 }
 
-.task-static__button {
-  padding: 0;
-  background-color: transparent;
-  inline-size: 25px;
-  block-size: 25px;
-}
-
+.task-static__button,
 .task-static__status-button {
   padding: 0;
   background-color: transparent;
@@ -35,6 +29,10 @@
 }
 
 .task__input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 2px solid var(--text-color);
+  padding: 8px;
   color: var(--text-color);
   font-family: "Pixelify Sans", sans-serif;
   background-color: transparent;

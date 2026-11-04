@@ -1,7 +1,6 @@
 .counter__block {
-  display: flex;
-  justify-content: center;
-  margin-block-start: 20px;
-  font-size: 40px;
+  margin-block-start: 28px;
+  font-size: 32px;
   font-variant-numeric: tabular-nums;
+  text-align: left;
 }
