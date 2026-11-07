@@ -25,13 +25,6 @@ function TaskList({
       <div className="task-section__header">
         <h2 className="task-section__title">Задачи</h2>
         <div className="task-list__controls">
-          <button
-            className="task-list__button"
-            onClick={addTask}
-            title="Добавить задачу"
-          >
-            <Plus />
-          </button>
           {tasks.length !== 0 && (
             <button
               className="task-list__button"
@@ -41,6 +34,13 @@ function TaskList({
               <Trash2 />
             </button>
           )}
+          <button
+            className="task-list__button"
+            onClick={addTask}
+            title="Добавить задачу"
+          >
+            <Plus />
+          </button>
         </div>
       </div>
       <div className="task-list">
