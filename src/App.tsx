@@ -5,6 +5,7 @@ import TaskList from "./components/TaskList/TaskList";
 import TimerSettings from "./components/Timer/TimerSettings";
 import MainImage from "./assets/image.svg?react";
 import useTimerSettings from "./hooks/useTimerSettings";
+import { getTimerSettingsKey } from "./constants";
 import getSavedData from "./utils/getSavedData";
 import setSavedData from "./utils/setSavedData";
 import type { Theme, TimerMode } from "./types";
@@ -108,7 +109,11 @@ function App() {
             )}
           </div>
         </div>
-        <Timer mode={mode} settings={settings} />
+        <Timer
+          key={`${mode}:${getTimerSettingsKey(settings)}`}
+          mode={mode}
+          settings={settings}
+        />
         {mode === "pomodoro" && <TaskList />}
       </main>
     </div>

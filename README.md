@@ -33,7 +33,7 @@ The project combines a focused timer interface with local task management, persi
 The timer state is split across focused custom hooks:
 
 - `useTimer` owns the countdown state, active state, and deadline-based interval logic.
-- `useTimerModes` restores the current mode state from `localStorage` or initializes a fresh timer for the selected mode.
+- `useTimerSession` restores the selected mode's progress, controls phase changes, and tracks the daily completion count.
 - `useTimerPersistence` synchronizes the current timer state with `localStorage` and updates the browser tab title.
 - `useTimerSettings` stores the selected timer preset or custom values and exposes the effective timer settings.
 - `useTimerHotkey` listens for the media play/pause key and toggles the timer when the page receives that event.
