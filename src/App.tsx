@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import { Moon, Sun, Eye, EyeOff, Settings } from "lucide-react";
-import Timer from "./components/Timer/Timer";
-import TaskList from "./components/TaskList/TaskList";
+import MeditationPage from "./pages/MeditationPage";
+import PomodoroPage from "./pages/PomodoroPage";
 import TimerSettings from "./components/Timer/TimerSettings";
 import MainImage from "./assets/image.svg?react";
 import useTimerSettings from "./hooks/useTimerSettings";
-import { getTimerSettingsKey } from "./constants";
 import getSavedData from "./utils/getSavedData";
 import setSavedData from "./utils/setSavedData";
 import type { Theme, TimerMode } from "./types";
@@ -109,12 +108,11 @@ function App() {
             )}
           </div>
         </div>
-        <Timer
-          key={`${mode}:${getTimerSettingsKey(settings)}`}
-          mode={mode}
-          settings={settings}
-        />
-        {mode === "pomodoro" && <TaskList />}
+        {mode === "pomodoro" ? (
+          <PomodoroPage settings={settings} />
+        ) : (
+          <MeditationPage settings={settings} />
+        )}
       </main>
     </div>
   );

@@ -59,7 +59,8 @@ Timer progress is persisted per mode. The saved state also includes a settings k
 
 The project uses a modular React structure with a clear separation between application composition, reusable UI blocks, stateful hooks, shared utilities, and assets.
 
-- `App.tsx` composes the application shell, theme toggle, mode toggle, settings popover, and timer.
+- `App.tsx` renders the shared toolbar and settings popover and selects the page for the active mode.
+- `pages/` contains `PomodoroPage` and `MeditationPage`. Both use the same timer, and the Pomodoro page also includes the task list.
 - `components/` contains reusable UI components such as the timer display, controls, counter, task list, task item, and settings panel.
 - `hooks/` contains stateful application logic for countdown timing, persistence, mode restoration, settings, and keyboard control.
 - `utils/` contains framework-independent helper functions for formatting time, reading/writing `localStorage`, date handling, and alarm playback.
@@ -135,6 +136,7 @@ npm run deploy
 |   |   |-- TaskList/            # Task list and editable task item
 |   |   `-- Timer/               # Timer UI and settings panel
 |   |-- hooks/                   # Timer, persistence, settings, and hotkey hooks
+|   |-- pages/                   # Pomodoro and Meditation screens
 |   |-- utils/                   # Formatting, storage, date, and audio helpers
 |   |-- App.css
 |   |-- App.tsx
