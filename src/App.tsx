@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Moon, Sun, Eye, EyeOff, Settings } from "lucide-react";
 import Timer from "./components/Timer/Timer";
+import TaskList from "./components/TaskList/TaskList";
 import TimerSettings from "./components/Timer/TimerSettings";
 import MainImage from "./assets/image.svg?react";
 import useTimerSettings from "./hooks/useTimerSettings";
@@ -108,6 +109,7 @@ function App() {
           </div>
         </div>
         <Timer mode={mode} settings={settings} />
+        {mode === "pomodoro" && <TaskList />}
       </main>
     </div>
   );

@@ -1,25 +1,11 @@
 import TaskItem from "./TaskItem/TaskItem";
 import { Plus, Trash2 } from "lucide-react";
-import type { Task } from "../../types";
+import useTasks from "../../hooks/useTasks";
 import "./TaskList.css";
 
-type TaskListProps = {
-  tasks: Task[];
-  addTask: () => void;
-  clearTasks: () => void;
-  onToggle: (id: number) => void;
-  onDelete: (id: number) => void;
-  onSave: (id: number, newText: string) => void;
-};
+function TaskList() {
+  const { tasks, addTask, saveTask, toggleTask, deleteTask, clearTasks } = useTasks();
 
-function TaskList({
-  tasks,
-  addTask,
-  clearTasks,
-  onToggle,
-  onDelete,
-  onSave,
-}: TaskListProps) {
   return (
     <section className="task-section">
       <div className="task-section__header">
@@ -50,9 +36,9 @@ function TaskList({
             text={task.text}
             isCompleted={task.isCompleted}
             isInitialEditing={task.isInitialEditing}
-            onToggle={() => onToggle(task.id)}
-            onDelete={() => onDelete(task.id)}
-            onSave={(newText) => onSave(task.id, newText)}
+            onToggle={() => toggleTask(task.id)}
+            onDelete={() => deleteTask(task.id)}
+            onSave={(newText) => saveTask(task.id, newText)}
           />
         ))}
         {tasks.length === 0 && (

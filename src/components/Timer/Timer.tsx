@@ -1,19 +1,15 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import useTimer from "../../hooks/useTimer";
 import useTimerModes from "../../hooks/useTimerModes";
 import useTimerPersistence from "../../hooks/useTimerPersistence";
 import useTimerHotkey from "../../hooks/useTimerHotkey";
 import formatTime from "../../utils/formatTime";
 import playAlarm from "../../utils/playAlarm";
-import setSavedData from "../../utils/setSavedData";
-import getSavedData from "../../utils/getSavedData";
 import Counter from "../Counter/Counter";
 import ControlButtons from "../ControlButtons/ControlButtons";
-import TaskList from "../TaskList/TaskList";
 import { getTimerSettingsKey } from "../../constants";
 import type {
   TimerMode,
-  Task,
   TimerSettings as TimerSettingsValue,
 } from "../../types";
 import "./Timer.css";
@@ -24,9 +20,6 @@ type TimerProps = {
 };
 
 function Timer({ mode, settings }: TimerProps) {
-  const [tasks, setTasks] = useState<Task[]>(() =>
-    getSavedData<Task[]>("pomodoro-tasks", []),
-  );
   const [workState, setWorkState] = useState(true);
   const [completedCount, setCompletedCount] = useState(0);
   const settingsKey = getTimerSettingsKey(settings);
@@ -57,49 +50,6 @@ function Timer({ mode, settings }: TimerProps) {
     setIsActive((prev) => !prev);
   }, [setIsActive]);
 
-  const onDelete = useCallback((id: number) => {
-    setTasks((prev) => prev.filter((task) => task.id !== id));
-  }, []);
-
-  const onToggle = useCallback((id: number) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id ? { ...task, isCompleted: !task.isCompleted } : task,
-      ),
-    );
-  }, []);
-
-  const onSave = useCallback(
-    (id: number, newText: string) => {
-      if (newText.trim() === "") {
-        onDelete(id);
-      } else {
-        setTasks((prev) =>
-          prev.map((task) =>
-            task.id === id
-              ? { ...task, text: newText, isInitialEditing: false }
-              : task,
-          ),
-        );
-      }
-    },
-    [onDelete],
-  );
-
-  const addTask = useCallback((text: string) => {
-    const newTask = {
-      id: Date.now(),
-      text: text,
-      isCompleted: false,
-      isInitialEditing: true,
-    };
-    setTasks((prev) => [...prev, newTask]);
-  }, []);
-
-  const clearTasks = useCallback(() => {
-    setTasks([]);
-  }, []);
-
   const resetTimer = useCallback(() => {
     setIsActive(false);
     setRemainded(
@@ -129,10 +79,6 @@ function Timer({ mode, settings }: TimerProps) {
 
   useTimerHotkey(toggleTimer);
 
-  useEffect(() => {
-    setSavedData<Task[]>("pomodoro-tasks", tasks);
-  }, [tasks]);
-
   return (
     <div>
       <div className="timer__block">
@@ -148,16 +94,6 @@ function Timer({ mode, settings }: TimerProps) {
         onResetOrSkip={resetTimer}
       />
       <Counter mode={mode} number={completedCount}></Counter>
-      {mode === "pomodoro" && (
-        <TaskList
-          tasks={tasks}
-          addTask={() => addTask("")}
-          onDelete={onDelete}
-          onToggle={onToggle}
-          onSave={onSave}
-          clearTasks={clearTasks}
-        />
-      )}
     </div>
   );
 }
