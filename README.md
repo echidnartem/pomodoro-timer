@@ -64,7 +64,7 @@ The project uses a modular React structure with a clear separation between appli
 - `components/` contains reusable UI components such as the timer display, controls, counter, task list, task item, and settings panel.
 - `hooks/` contains stateful application logic for countdown timing, persistence, mode restoration, settings, and keyboard control.
 - `utils/` contains framework-independent helper functions for formatting time, reading/writing `localStorage`, date handling, and alarm playback.
-- `constants.ts` defines timer presets and settings helpers.
+- `constants/` defines timer presets, duration limits, and browser storage keys.
 - `types.ts` centralizes shared TypeScript types used across the app.
 
 The current structure is intentionally lightweight. It keeps related code easy to find without introducing a larger architectural pattern than the project needs.
@@ -140,7 +140,7 @@ npm run deploy
 |   |-- utils/                   # Formatting, storage, date, and audio helpers
 |   |-- App.css
 |   |-- App.tsx
-|   |-- constants.ts             # Timer presets and settings helpers
+|   |-- constants/               # Timer presets, duration limits, and storage keys
 |   |-- index.css
 |   |-- main.tsx
 |   |-- types.ts

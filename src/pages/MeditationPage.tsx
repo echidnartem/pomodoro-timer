@@ -1,5 +1,5 @@
 import Timer from "../components/Timer/Timer";
-import { getTimerSettingsKey } from "../constants";
+import getTimerSettingsKey from "../utils/getTimerSettingsKey";
 import type { TimerSettings } from "../types";
 
 export default function MeditationPage({ settings }: { settings: TimerSettings }) {

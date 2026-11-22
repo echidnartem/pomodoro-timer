@@ -1,4 +1,8 @@
-import { CUSTOM_TIMER_SETTINGS_ID, MAX_TIMER_MINUTES } from "../../constants";
+import {
+  CUSTOM_TIMER_SETTINGS_ID,
+  MAX_TIMER_MINUTES,
+  MIN_TIMER_MINUTES,
+} from "../../constants/timerSettings";
 import type {
   TimerSettings as TimerSettingsValue,
   CustomTimerSettings,
@@ -27,7 +31,7 @@ function toMinutes(seconds: number): number {
 }
 
 function toSeconds(minutes: number): number {
-  return Math.min(MAX_TIMER_MINUTES, Math.max(1, Math.round(minutes))) * 60;
+  return Math.min(MAX_TIMER_MINUTES, Math.max(MIN_TIMER_MINUTES, Math.round(minutes))) * 60;
 }
 
 function getPresetLabel(settings: TimerSettingsValue): string {
@@ -82,7 +86,7 @@ function TimerSettings({
             <input
               className="timer-settings__input"
               type="number"
-              min="1"
+              min={MIN_TIMER_MINUTES}
               max={MAX_TIMER_MINUTES}
               step="1"
               value={toMinutes(settings[field.key])}

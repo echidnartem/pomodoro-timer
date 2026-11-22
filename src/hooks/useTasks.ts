@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
+import { STORAGE_KEYS } from "../constants/storageKeys";
 import type { Task } from "../types";
 import getSavedData from "../utils/getSavedData";
 import setSavedData from "../utils/setSavedData";
 
-const TASKS_STORAGE_KEY = "pomodoro-tasks";
-
 export default function useTasks() {
-  const [tasks, setTasks] = useState(() => getSavedData<Task[]>(TASKS_STORAGE_KEY, []));
+  const [tasks, setTasks] = useState(() => getSavedData<Task[]>(STORAGE_KEYS.tasks, []));
 
   useEffect(() => {
-    setSavedData(TASKS_STORAGE_KEY, tasks);
+    setSavedData(STORAGE_KEYS.tasks, tasks);
   }, [tasks]);
 
   function addTask() {

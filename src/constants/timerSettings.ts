@@ -1,6 +1,7 @@
-import type { TimerSettings } from "./types";
+import type { TimerSettings } from "../types";
 
 export const CUSTOM_TIMER_SETTINGS_ID = "custom";
+export const MIN_TIMER_MINUTES = 1;
 export const MAX_TIMER_MINUTES = 600;
 
 export const TIMER_PRESETS: TimerSettings[] = [
@@ -25,7 +26,3 @@ export const TIMER_PRESETS: TimerSettings[] = [
 ];
 
 export const DEFAULT_TIMER_SETTINGS = TIMER_PRESETS[0];
-
-export function getTimerSettingsKey(settings: TimerSettings): string {
-  return `${settings.id}:${settings.workTime}:${settings.breakTime}:${settings.meditationTime}`;
-}

@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react";
-import { getTimerSettingsKey } from "../constants";
+import { getTimerSessionStorageKey } from "../constants/storageKeys";
+import getTimerSettingsKey from "../utils/getTimerSettingsKey";
 import type { TimerData, TimerMode, TimerSettings } from "../types";
 import getMskDate from "../utils/getMskDate";
 import getSavedData from "../utils/getSavedData";
@@ -9,7 +10,7 @@ import useTimerHotkey from "./useTimerHotkey";
 import useTimerPersistence from "./useTimerPersistence";
 
 function restoreSession(mode: TimerMode, settingsKey: string, focusTime: number) {
-  const saved = getSavedData<TimerData | null>(`${mode}-data`, null);
+  const saved = getSavedData<TimerData | null>(getTimerSessionStorageKey(mode), null);
   const today = saved?.date === getMskDate() ? saved : null;
   const matchingSession = today?.settingsKey === settingsKey ? today : null;
 

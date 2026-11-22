@@ -5,6 +5,7 @@ import PomodoroPage from "./pages/PomodoroPage";
 import TimerSettings from "./components/Timer/TimerSettings";
 import MainImage from "./assets/image.svg?react";
 import useTimerSettings from "./hooks/useTimerSettings";
+import { STORAGE_KEYS } from "./constants/storageKeys";
 import getSavedData from "./utils/getSavedData";
 import setSavedData from "./utils/setSavedData";
 import type { Theme, TimerMode } from "./types";
@@ -13,7 +14,7 @@ import "./App.css";
 function App() {
   const [theme, setTheme] = useState<Theme>(() => {
     return (
-      getSavedData<Theme | null>("theme", null) ||
+      getSavedData<Theme | null>(STORAGE_KEYS.theme, null) ||
       (window.matchMedia("(prefers-color-scheme: dark)").matches
         ? "dark"
         : "light")
@@ -21,7 +22,7 @@ function App() {
   });
 
   const [mode, setMode] = useState<TimerMode>(() => {
-    return getSavedData<TimerMode | null>("mode", null) || "pomodoro";
+    return getSavedData<TimerMode | null>(STORAGE_KEYS.mode, null) || "pomodoro";
   });
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const {
@@ -40,12 +41,12 @@ function App() {
         theme === "dark" ? "favicon-light.svg" : "favicon-dark.svg";
     }
     document.documentElement.setAttribute("data-theme", theme);
-    setSavedData<Theme>("theme", theme);
+    setSavedData<Theme>(STORAGE_KEYS.theme, theme);
   }, [theme]);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-mode", mode);
-    setSavedData<TimerMode>("mode", mode);
+    setSavedData<TimerMode>(STORAGE_KEYS.mode, mode);
   }, [mode]);
 
   const toggleTheme = () => {

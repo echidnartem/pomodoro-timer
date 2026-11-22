@@ -3,14 +3,15 @@ import {
   CUSTOM_TIMER_SETTINGS_ID,
   DEFAULT_TIMER_SETTINGS,
   MAX_TIMER_MINUTES,
+  MIN_TIMER_MINUTES,
   TIMER_PRESETS,
-} from "../constants";
+} from "../constants/timerSettings";
+import { STORAGE_KEYS } from "../constants/storageKeys";
 import getSavedData from "../utils/getSavedData";
 import setSavedData from "../utils/setSavedData";
 import type { TimerSettings, CustomTimerSettings } from "../types";
 
-const TIMER_SETTINGS_STORAGE_KEY = "timer-settings";
-const MIN_TIMER_SECONDS = 60;
+const MIN_TIMER_SECONDS = MIN_TIMER_MINUTES * 60;
 const MAX_TIMER_SECONDS = MAX_TIMER_MINUTES * 60;
 
 function clampSettings(settings: TimerSettings): TimerSettings {
@@ -47,7 +48,7 @@ function areTimerSettingsEqual(
 function useTimerSettings(): UseTimerSettingsResult {
   const [settings, setSettings] = useState<TimerSettings>(() => {
     const savedSettings = getSavedData<TimerSettings>(
-      TIMER_SETTINGS_STORAGE_KEY,
+      STORAGE_KEYS.timerSettings,
       DEFAULT_TIMER_SETTINGS,
     );
     return clampSettings(savedSettings);
@@ -84,7 +85,7 @@ function useTimerSettings(): UseTimerSettingsResult {
   );
 
   useEffect(() => {
-    setSavedData<TimerSettings>(TIMER_SETTINGS_STORAGE_KEY, settings);
+    setSavedData<TimerSettings>(STORAGE_KEYS.timerSettings, settings);
   }, [settings]);
 
   return {

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { getTimerSessionStorageKey } from "../constants/storageKeys";
 import formatTime from "../utils/formatTime";
 import setSavedData from "../utils/setSavedData";
 import getMskDate from "../utils/getMskDate";
@@ -26,7 +27,7 @@ function useTimerPersistence(
       completedCount,
       settingsKey,
     };
-    setSavedData<TimerData>(`${mode}-data`, data);
+    setSavedData<TimerData>(getTimerSessionStorageKey(mode), data);
   }, [remainded, workState, isActive, completedCount, mode, settingsKey]);
 }
 
