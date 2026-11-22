@@ -14,7 +14,6 @@
   flex: 1;
   min-width: 0;
   overflow-wrap: anywhere;
-  font-family: "Pixelify Sans", sans-serif;
   font-weight: 650;
   line-height: 1;
   white-space: pre-wrap;
@@ -34,6 +33,6 @@
   border: 2px solid var(--text-color);
   padding: 8px;
   color: var(--text-color);
-  font-family: "Pixelify Sans", sans-serif;
+  font-family: inherit;
   background-color: transparent;
 }

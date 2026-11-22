@@ -1,0 +1,26 @@
+:root {
+  --light-bg: #f7f3b5;
+  --light-text: #372357;
+
+  --bg-color: var(--light-bg);
+  --text-color: var(--light-text);
+  --button-bg: var(--text-color);
+  --button-text: var(--bg-color);
+}
+
+:root[data-mode="meditation"] {
+  --light-bg: #ed254e;
+  --light-text: #002a32;
+}
+
+:root[data-theme="dark"] {
+  --bg-color: var(--light-text);
+  --text-color: var(--light-bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg-color: var(--light-text);
+    --text-color: var(--light-bg);
+  }
+}

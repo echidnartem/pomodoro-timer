@@ -1,17 +1,10 @@
 @import "./assets/fonts/fonts.css";
+@import "./styles/theme.css";
 
 :root {
-  --color-light-bg: #f7f3b5;
-  --color-light-text: #372357;
-  --color-dark-bg: #372357;
-  --color-dark-text: #f7f3b5;
+  --font-display: "Jersey 15", sans-serif;
+  --font-ui: "Pixelify Sans", sans-serif;
 
-  --bg-color: var(--color-light-bg);
-  --text-color: var(--color-light-text);
-  --button-bg: var(--color-light-text);
-  --button-text: var(--color-light-bg);
-
-  font-weight: 400;
   line-height: 1.5;
   text-rendering: optimizeLegibility;
 
@@ -25,7 +18,7 @@ body {
   min-height: 100vh;
   margin: 0;
   color: var(--text-color);
-  font-family: "Jersey 15", sans-serif;
+  font-family: var(--font-display);
   background-color: var(--bg-color);
   transition:
     background-color 0.3s ease,
@@ -37,7 +30,7 @@ button {
   border-radius: 2px;
   padding: 0.6em 1.2em;
   color: var(--button-text);
-  font-family: "Pixelify Sans", sans-serif;
+  font-family: var(--font-ui);
   font-weight: 500;
   font-size: 1em;
   text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
@@ -63,41 +56,4 @@ button:active {
   height: 24px;
   color: var(--text-color);
   stroke-width: 2;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg-color: var(--color-dark-bg);
-    --text-color: var(--color-dark-text);
-    --button-bg: var(--color-dark-text);
-    --button-text: var(--color-dark-bg);
-  }
-}
-
-[data-theme="dark"] {
-  --bg-color: var(--color-dark-bg);
-  --text-color: var(--color-dark-text);
-  --button-bg: var(--color-dark-text);
-  --button-text: var(--color-dark-bg);
-}
-
-[data-theme="light"] {
-  --bg-color: var(--color-light-bg);
-  --text-color: var(--color-light-text);
-  --button-bg: var(--color-light-text);
-  --button-text: var(--color-light-bg);
-}
-
-[data-mode="pomodoro"] {
-  --color-light-bg: #f7f3b5;
-  --color-light-text: #372357;
-  --color-dark-bg: #372357;
-  --color-dark-text: #f7f3b5;
-}
-
-[data-mode="meditation"] {
-  --color-light-bg: #ed254e;
-  --color-light-text: #002a32;
-  --color-dark-bg: #002a32;
-  --color-dark-text: #ed254e;
 }
